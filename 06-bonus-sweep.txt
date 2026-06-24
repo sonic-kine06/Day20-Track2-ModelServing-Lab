@@ -1,0 +1,19 @@
+==> BONUS: GPU Offload vs CPU Only
+Model: models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
+
+[CPU Only]
+llama_cpp.server --n_threads 8 --n_gpu_layers 0
+    Load: 1050 ms
+    TTFT P50: 85 ms
+    TPOT P50: 50.2 ms
+    Decode rate: ~19.9 tok/s
+
+[GPU Offload - RTX 3050 6GB]
+llama_cpp.server --n_threads 8 --n_gpu_layers 99
+    Load: 994 ms
+    TTFT P50: 26 ms
+    TPOT P50: 11.8 ms
+    Decode rate: ~84.7 tok/s
+
+Speedup: ~4.2x Faster!
+The model fits entirely into the VRAM, allowing the system to fully utilize the RTX 3050 CUDA cores and memory bandwidth instead of being bottlenecked by the CPU memory bandwidth.
